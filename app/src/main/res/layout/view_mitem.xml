@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="60dp"
+    android:layout_height="50dp"
+    android:layout_marginLeft="50dp">
+    <!--<ImageView xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--android:orientation="vertical"-->
+        <!--android:src="@mipmap/search"-->
+        <!--android:layout_width="60dp"-->
+        <!--android:layout_marginLeft="20dp"-->
+        <!--android:layout_height="60dp"-->
+        <!--/>-->
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="50dp"
+        android:layout_height="35dp"
+        android:src="@mipmap/search"
+        android:layout_marginLeft="10dp">
+    </de.hdodenhof.circleimageview.CircleImageView>
+    <TextView
+        android:layout_width="50dp"
+        android:layout_height="15dp"
+        android:textSize="12sp"
+        android:layout_marginLeft="20dp"
+        android:text="搜词"/>
+</LinearLayout>
+
+
+
