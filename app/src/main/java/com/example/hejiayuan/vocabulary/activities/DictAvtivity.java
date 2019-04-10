@@ -1,6 +1,9 @@
 package com.example.hejiayuan.vocabulary.activities;
 
+
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
@@ -9,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -140,19 +144,23 @@ public class DictAvtivity extends AppCompatActivity {
         imageBtnDictBackToGeneral.setOnClickListener(new IBDictBackToGeneralClickLis());
         imageBtnDictHornEng.setOnClickListener(new IBDictPlayMusicByAccentClickLis(Mp3Player.ENGLISH_ACCENT));
         imageBtnDictHornUSA.setOnClickListener(new IBDictPlayMusicByAccentClickLis(Mp3Player.USA_ACCENT));
-        // imageBtnDictAddToWordList.setOnClickListener(new IBDictAddWordToGlossaryClickLis());
+        imageBtnDictAddToWordList.setOnClickListener(new IBDictAddWordToGlossaryClickLis());
         imageBtnDictDeleteEditText.setOnClickListener(new IBDictDeleteEditTextClickLis());
         imageBtnDictSearch.setOnClickListener(new IBDictSearchClickLis());
     }
 
-//    public void showAddDialog() {
-//        if (searchedWord == null)
-//            return;
-//        AlertDialog dialog = new AlertDialog.Builder(DictAvtivity.this).create();
-//        dialog.show();
-//        Window window = dialog.getWindow();
-//        //window.setContentView(R.layout.dia);
-//    }
+    public void showAddDialog() {
+        if (searchedWord == null)
+            return;
+        AlertDialog.Builder dialog = new AlertDialog.Builder(DictAvtivity.this);
+        dialog.setIcon(R.mipmap.dialog);
+        dialog.setTitle("添加");
+        dialog.setMessage("确定把" + searchedWord + "添加到单词本么？");
+        dialog.setPositiveButton("确定", new BDictDialogConfirmClickLis());
+        dialog.setNegativeButton("取消", null);
+        AlertDialog alertDialog = dialog.create();
+        alertDialog.show();
+    }
 
     /**
      * 有问题存在，待改善
@@ -270,7 +278,7 @@ public class DictAvtivity extends AppCompatActivity {
         }
     }
 
-    class IBDictAddWordToGlossaryClickLi implements View.OnClickListener {
+    class IBDictAddWordToGlossaryClickLis implements View.OnClickListener {
         @Override
         public void onClick(View v) {
 
@@ -284,17 +292,19 @@ public class DictAvtivity extends AppCompatActivity {
         }
     }
 
-    class BDictDialogConfirmClickLis implements View.OnClickListener {
+    class BDictDialogConfirmClickLis implements DialogInterface.OnClickListener {
+
         @Override
-        public void onClick(View v) {
+        public void onClick(DialogInterface dialog, int which) {
 
         }
     }
 
-    class BDictDialogCancelClickLis implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
+    class BDictDialogCancelClickLis implements DialogInterface.OnClickListener {
 
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            showAddDialog();
         }
     }
 
