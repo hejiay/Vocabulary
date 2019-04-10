@@ -5,11 +5,13 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -23,14 +25,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.hejiayuan.vocabulary.databases.DataBaseHelperDict;
+import com.example.hejiayuan.vocabulary.databases.WordList;
 import com.example.hejiayuan.vocabulary.entities.Dict;
 import com.example.hejiayuan.vocabulary.adapters.DictSentenceListAdapter;
 import com.example.hejiayuan.vocabulary.utils.Mp3Player;
 import com.example.hejiayuan.vocabulary.R;
 import com.example.hejiayuan.vocabulary.entities.WordValue;
 
+import org.litepal.LitePal;
+import org.litepal.LitePalApplication;
+import org.litepal.LitePalBase;
+import org.litepal.LitePalDB;
+import org.litepal.crud.LitePalSupport;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class DictAvtivity extends AppCompatActivity {
 
@@ -46,8 +56,8 @@ public class DictAvtivity extends AppCompatActivity {
     public ImageButton imageBtnDictBackToGeneral= null;
     public ImageButton imageBtnDictDeleteEditText = null;
 
-    public Button buttonDictDialogConfirm = null;
-    public Button buttonDictDialogCancel = null;
+//    public Button buttonDictDialogConfirm = null;
+//    public Button buttonDictDialogCancel = null;
 
     public EditText editTextDictSearch = null;
 
@@ -55,9 +65,11 @@ public class DictAvtivity extends AppCompatActivity {
 
     public WordValue w = null;
 
-    public DataBaseHelperDict dbGlossaryHelper = null;//需注意
-    public SQLiteDatabase dbGlossaryR = null;
-    public SQLiteDatabase dbGlossaryW = null;
+//    public DataBaseHelperDict dbGlossaryHelper = null;//需注意
+//    public SQLiteDatabase dbGlossaryR = null;
+//    public SQLiteDatabase dbGlossaryW = null;
+
+//    public WordList wordList = null;
 
     public Mp3Player mp3Box = null;
 
@@ -85,11 +97,12 @@ public class DictAvtivity extends AppCompatActivity {
         editTextDictSearch = (EditText) findViewById(R.id.edit_text_dict);
         editTextDictSearch.setOnEditorActionListener(new EditTextDictEditActionLis());
         dict = new Dict(DictAvtivity.this, "dict");
+//        wordList = new WordList();
         mp3Box = new Mp3Player(DictAvtivity.this, "dict");
         //需注意
-        dbGlossaryHelper = new DataBaseHelperDict(DictAvtivity.this, "glossary");
-        dbGlossaryR = dbGlossaryHelper.getReadableDatabase();
-        dbGlossaryW = dbGlossaryHelper.getWritableDatabase();
+//        dbGlossaryHelper = new DataBaseHelperDict(DictAvtivity.this, "glossary");
+//        dbGlossaryR = dbGlossaryHelper.getReadableDatabase();
+//        dbGlossaryW = dbGlossaryHelper.getWritableDatabase();
 
         dictHandler = new Handler(Looper.getMainLooper());
 
@@ -155,7 +168,7 @@ public class DictAvtivity extends AppCompatActivity {
         AlertDialog.Builder dialog = new AlertDialog.Builder(DictAvtivity.this);
         dialog.setIcon(R.mipmap.dialog);
         dialog.setTitle("添加");
-        dialog.setMessage("确定把" + searchedWord + "添加到单词本么？");
+        dialog.setMessage("确定把[" + searchedWord + "]添加到单词本么？");
         dialog.setPositiveButton("确定", new BDictDialogConfirmClickLis());
         dialog.setNegativeButton("取消", null);
         AlertDialog alertDialog = dialog.create();
@@ -170,8 +183,22 @@ public class DictAvtivity extends AppCompatActivity {
             Toast.makeText(DictAvtivity.this, "单词格式错误", Toast.LENGTH_SHORT).show();
             return;//若不是有效单词则不能添加单词本
         }
-        //boolean isSuccess = dbGlossaryHelper.
+        List<WordList> queryWords = LitePal.select("word")
+                .where("word = ?", searchedWord)
+                .find(WordList.class);
+       boolean isSuccess = queryWords.isEmpty();
+        if (isSuccess) {
+            WordList wordList = new WordList();
+            wordList.setWord(w.getWord());
+            wordList.setInterpret(w.getInterpret());
+            wordList.save();
+            Toast.makeText(DictAvtivity.this, "添加成功", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(DictAvtivity.this, searchedWord + " 已存在", Toast.LENGTH_SHORT).show();
+            return;
+        }
     }
+
 
 
     @Override
@@ -181,6 +208,8 @@ public class DictAvtivity extends AppCompatActivity {
 
         initial();
         setOnClickLis();
+
+        LitePal.getDatabase();
 
         new ThreadDictSearchWordAndSetInterface().start();
     }
@@ -281,7 +310,7 @@ public class DictAvtivity extends AppCompatActivity {
     class IBDictAddWordToGlossaryClickLis implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-
+            showAddDialog();
         }
     }
 
@@ -296,15 +325,8 @@ public class DictAvtivity extends AppCompatActivity {
 
         @Override
         public void onClick(DialogInterface dialog, int which) {
-
-        }
-    }
-
-    class BDictDialogCancelClickLis implements DialogInterface.OnClickListener {
-
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            showAddDialog();
+            Log.d("DictActivity.this", "添加成功");
+            insertWordToGlossary();
         }
     }
 
