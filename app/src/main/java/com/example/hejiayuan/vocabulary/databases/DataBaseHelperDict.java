@@ -4,19 +4,20 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class DataBaseHelperDict extends SQLiteOpenHelper {
+public class
+DataBaseHelperDict extends SQLiteOpenHelper {
 
     public Context mContext = null;
     public String tableName = null;
     public static int VERSION = 1;
 
     String SQL = "create table dict(" +
-            "word text, " + //单词与=
+            "word text, " + //单词
             "pse text," + //英式发音
             "prone text," + //英式发音地址
             "psa text," + //美式音标
             "prona text," + //美式发音地址
-            "interpret text," + //发音翻译
+            "interpret text," + //翻译
             "sentorig text," + //例句英文
             "senttrans text)";//例句中文
 

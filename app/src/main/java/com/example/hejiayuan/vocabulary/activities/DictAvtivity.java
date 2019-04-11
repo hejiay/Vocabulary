@@ -187,7 +187,7 @@ public class DictAvtivity extends AppCompatActivity {
                 .where("word = ?", searchedWord)
                 .find(WordList.class);
        boolean isSuccess = queryWords.isEmpty();
-        if (isSuccess) {
+        if (isSuccess) { // 判断若单词本中已有该单词就不再加入
             WordList wordList = new WordList();
             wordList.setWord(w.getWord());
             wordList.setInterpret(w.getInterpret());

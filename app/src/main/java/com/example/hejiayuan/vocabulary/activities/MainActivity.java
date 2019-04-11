@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements BadgeDismissListe
     private Statistics statisticsTab;
     private Setting settingTab;
 
-    View middleView = mTabbar.getMiddleView();
+//    View middleView = mTabbar.getMiddleView();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -70,27 +70,27 @@ public class ContentHandler extends DefaultHandler {
         String str = new String(ch, start,length);
         if ("key".equals(tagName)) {
             wordValue.setWord(str);
-            Log.d("DictAvtivity.this", 1 + str);
+            //Log.d("DictAvtivity.this", 1 + str);
         } else if ("ps".equals(tagName)) {
             if (wordValue.getPsE().length() <= 0) {
                 wordValue.setPsE(str);
-                Log.d("DictAvtivity.this", 2 + str);
+               // Log.d("DictAvtivity.this", 2 + str);
             } else {
                 wordValue.setPsA(str);
-                Log.d("DictAvtivity.this", 3 + str);
+                //Log.d("DictAvtivity.this", 3 + str);
             }
         } else if ("pron".equals(tagName)) {
             if (wordValue.getPronE().length() <= 0) {
                 wordValue.setPronE(str);
-                Log.d("DictAvtivity.this", 4 + str);
+               // Log.d("DictAvtivity.this", 4 + str);
             } else {
                 wordValue.setPronA(str);
-                Log.d("DictAvtivity.this", 5 + str);
+                //Log.d("DictAvtivity.this", 5 + str);
             }
         } else if ("pos".equals(tagName)) {
             isChinese = false;
             interpret = interpret + str + " ";
-            Log.d("DictAvtivity.this", 6 + interpret);
+            //Log.d("DictAvtivity.this", 6 + interpret);
         } else if ("acceptation".equals(tagName)) {
             interpret = interpret + str + "\n";
             interpret = wordValue.getInterpret() + interpret;
@@ -103,7 +103,7 @@ public class ContentHandler extends DefaultHandler {
         }  else if ("trans".equals(tagName)) {
             String temp = wordValue.getSentTrans() + str + "\n";
             wordValue.setSentTrans(temp);
-            Log.d("DictAvtivity.this", 8 + temp);
+            //Log.d("DictAvtivity.this", 8 + temp);
         } else if ("fy".equals(tagName)) {
             isChinese = true;
             wordValue.setInterpret(str);

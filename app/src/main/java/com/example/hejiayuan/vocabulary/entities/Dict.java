@@ -146,7 +146,7 @@ public class Dict {
 //            tempWord = "_" + URLEncoder.encode(tempWord);
 //        }
         InputStream in = null;
-        String str = null;
+        //String str = null;
         try {
             String url = NetOperator.iCiBaURL + tempWord + NetOperator.API;
             in = NetOperator.getInputStreamByUrl(url);//从网络上获得输入流
