@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -25,16 +26,27 @@ import java.util.List;
 
 public class Note extends Fragment implements View.OnClickListener, TextWatcher {
     private List<WordList> wordLists = new ArrayList<>();
+
+    private SwipeRefreshLayout swipeRefreshLayout;
+
+    WordListAdapter adapter;
+
+    LinearLayoutManager layoutManager;
+
+    RecyclerView recyclerView;
+
+    View layout;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View layout = inflater.inflate(R.layout.note, null);
+        layout = inflater.inflate(R.layout.note, null);
         initWordList();//初始化单词本数据
-        RecyclerView recyclerView = (RecyclerView) layout.findViewById(R.id.id_note_recyclerview);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(null);
+        recyclerView = (RecyclerView) layout.findViewById(R.id.id_note_recyclerview);
+        layoutManager = new LinearLayoutManager(null);
         recyclerView.setLayoutManager(layoutManager);
-        WordListAdapter adapter = new WordListAdapter(wordLists);
+        adapter = new WordListAdapter(wordLists);
         recyclerView.setAdapter(adapter);
+        refreshWordList(layout);//刷新操作
         return layout;
     }
 
@@ -59,7 +71,25 @@ public class Note extends Fragment implements View.OnClickListener, TextWatcher 
     }
 
     private void initWordList() {
+        if (wordLists != null)
+            wordLists.clear();
         wordLists = LitePal.select("word", "interpret")
                 .find(WordList.class);//从数据库中查询单词本中已有的数据
+    }
+
+    private void refreshWordList(View layout) {
+        swipeRefreshLayout = (SwipeRefreshLayout) layout.findViewById(R.id.id_note_swiperefresh);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                initWordList();//重新查询数据
+                if (adapter != null)
+                    adapter = null;
+                adapter = new WordListAdapter(wordLists);
+                recyclerView.setAdapter(adapter);
+                swipeRefreshLayout.setRefreshing(false);///刷新结束，进度条隐藏
+            }
+        });
     }
 }

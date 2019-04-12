@@ -1,0 +1,8 @@
+<resources>
+    <string-array name="spingarr_selected">
+        <item>所有单词</item>
+        <item>陌生单词</item>
+        <item>模糊单词</item>
+        <item>熟悉单词</item>
+    </string-array>
+</resources>

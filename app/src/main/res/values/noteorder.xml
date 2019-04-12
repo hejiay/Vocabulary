@@ -1,0 +1,7 @@
+<resources>
+    <string-array name="spingarr_order">
+        <item>日期</item>
+        <item>字母</item>
+        <item>熟练度</item>
+    </string-array>
+</resources>
