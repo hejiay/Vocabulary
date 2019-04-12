@@ -1,5 +1,6 @@
 package com.example.hejiayuan.vocabulary.pages;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,6 +19,7 @@ import com.example.hejiayuan.vocabulary.R;
 import com.example.hejiayuan.vocabulary.activities.MainActivity;
 import com.example.hejiayuan.vocabulary.adapters.WordListAdapter;
 import com.example.hejiayuan.vocabulary.databases.WordList;
+import com.example.hejiayuan.vocabulary.utils.MyApplication;
 
 import org.litepal.LitePal;
 
@@ -31,6 +33,8 @@ public class Note extends Fragment implements View.OnClickListener, TextWatcher 
 
     WordListAdapter adapter;
 
+    Context context;
+
     LinearLayoutManager layoutManager;
 
     RecyclerView recyclerView;
@@ -43,8 +47,9 @@ public class Note extends Fragment implements View.OnClickListener, TextWatcher 
         initWordList();//初始化单词本数据
         recyclerView = (RecyclerView) layout.findViewById(R.id.id_note_recyclerview);
         layoutManager = new LinearLayoutManager(null);
+        context = MyApplication.getContext();
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new WordListAdapter(wordLists);
+        adapter = new WordListAdapter(wordLists, context);
         recyclerView.setAdapter(adapter);
         refreshWordList(layout);//刷新操作
         return layout;
@@ -86,7 +91,7 @@ public class Note extends Fragment implements View.OnClickListener, TextWatcher 
                 initWordList();//重新查询数据
                 if (adapter != null)
                     adapter = null;
-                adapter = new WordListAdapter(wordLists);
+                adapter = new WordListAdapter(wordLists, context);
                 recyclerView.setAdapter(adapter);
                 swipeRefreshLayout.setRefreshing(false);///刷新结束，进度条隐藏
             }

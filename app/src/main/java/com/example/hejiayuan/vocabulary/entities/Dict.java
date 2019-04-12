@@ -4,10 +4,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.hejiayuan.vocabulary.databases.DataBaseHelperDict;
 import com.example.hejiayuan.vocabulary.utils.ContentHandler;
 import com.example.hejiayuan.vocabulary.network.NetOperator;
+import com.example.hejiayuan.vocabulary.utils.MyApplication;
 import com.example.hejiayuan.vocabulary.utils.XMLParser;
 
 import org.xml.sax.InputSource;
@@ -112,13 +114,15 @@ public class Dict {
      * @return
      */
     public WordValue getWordFromDict(String searchedWord) {
-        WordValue w = new WordValue();
+        WordValue w = null;
 
         String[] columus = new String[] { "word",
                 "pse","prone","psa","prona","interpret","sentorig","senttrans"};
         String[] strArray = new String[8];
-        Cursor cursor = dbR.query(tableName, columus, "word=?",
-                            new String[]{ searchedWord }, null,null, null);
+        Log.d(MyApplication.getContext().toString(), searchedWord + "1 ");
+        Log.d(MyApplication.getContext().toString(), searchedWord + "1 " + tableName);
+        Cursor cursor = dbR.query(tableName, columus, "word = ?",
+                new String[]{searchedWord}, null,null, null);
         while(cursor.moveToNext()) {
             for (int i = 0; i < strArray.length; i++) {
                 strArray[i] = cursor.getString(cursor.getColumnIndex(columus[i]));

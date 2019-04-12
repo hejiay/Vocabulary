@@ -31,6 +31,7 @@ import com.example.hejiayuan.vocabulary.adapters.DictSentenceListAdapter;
 import com.example.hejiayuan.vocabulary.utils.Mp3Player;
 import com.example.hejiayuan.vocabulary.R;
 import com.example.hejiayuan.vocabulary.entities.WordValue;
+import com.example.hejiayuan.vocabulary.utils.MyApplication;
 
 import org.litepal.LitePal;
 import org.litepal.LitePalApplication;
@@ -106,14 +107,7 @@ public class DictAvtivity extends AppCompatActivity {
 
         dictHandler = new Handler(Looper.getMainLooper());
 
-        //对searchedWord进行初始化
-        Intent intent = this.getIntent();
-        searchedWord = intent.getStringExtra("word");
-        if (searchedWord == null) {
-            searchedWord = null;
-        }
-        //设置查找的文本
-        textDictWord.setText(searchedWord);
+
     }
 
     /**
@@ -124,6 +118,7 @@ public class DictAvtivity extends AppCompatActivity {
         //首先初始化界面
         dictHandler.post(new RunnableDictSetTextInterface(searchedWord, "", "", "", null, null));
 
+        dict = new Dict(MyApplication.getContext(), "dict");
         w = null;//对w进行初始化
         if (dict.isWordExist(word) == false) {//数据库中没有单词记录，从网络上同步
             if ((w = dict.getWordFromIntrenet(word)) == null || "".equals(w.getWord())) {
@@ -133,7 +128,7 @@ public class DictAvtivity extends AppCompatActivity {
             //错词不添加进词典
             dict.insertWordToDict(w, true);//默认添加到词典
         }//走到这一步说明从网上同步成功，数据库中一定存在单词记录
-        w = dict.getWordFromIntrenet(word);
+        w = dict.getWordFromDict(word);
         if (w == null) { //若是词典中还没有用空字符串代替
             w = new WordValue();
         }
@@ -207,9 +202,11 @@ public class DictAvtivity extends AppCompatActivity {
         setContentView(R.layout.activity_dict);
 
         initial();
+        getIntentFromWordList();
         setOnClickLis();
 
         LitePal.getDatabase();
+        
 
         new ThreadDictSearchWordAndSetInterface().start();
     }
@@ -356,5 +353,16 @@ public class DictAvtivity extends AppCompatActivity {
         new ThreadDictSearchWordAndSetInterface().start();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(editTextDictSearch.getWindowToken(), 0);
+    }
+
+    public void getIntentFromWordList() {
+        //对searchedWord进行初始化
+        Intent intent = this.getIntent();
+        searchedWord = intent.getStringExtra("searchedword");
+        if (searchedWord == null) {
+            searchedWord = "";
+        }
+        //设置查找的文本
+        textDictWord.setText(searchedWord);
     }
 }

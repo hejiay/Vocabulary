@@ -1,5 +1,8 @@
 package com.example.hejiayuan.vocabulary.adapters;
 
+import android.app.Application;
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,14 +13,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.hejiayuan.vocabulary.R;
+import com.example.hejiayuan.vocabulary.activities.DictAvtivity;
 import com.example.hejiayuan.vocabulary.activities.MainActivity;
 import com.example.hejiayuan.vocabulary.databases.WordList;
+import com.example.hejiayuan.vocabulary.entities.Dict;
 import com.example.hejiayuan.vocabulary.utils.MyApplication;
 
 import java.util.List;
 
 public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHolder>{
     private List<WordList> mWordLsits;
+
+    private Context context;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         View wordListView;
@@ -33,8 +40,9 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
         }
     }
 
-    public WordListAdapter(List<WordList> mWordLsits) {
+    public WordListAdapter(List<WordList> mWordLsits, Context context) {
         this.mWordLsits = mWordLsits;
+        this.context = context;
     }
 
     @Override
@@ -47,7 +55,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
                 WordList wordList = mWordLsits.get(position);
-                Toast.makeText(MyApplication.getContext(), " " + position, Toast.LENGTH_SHORT).show();
+                gotoDictActivity(wordList);
             }
         });
         holder.imgBtnDelete.setOnClickListener(new View.OnClickListener() {
@@ -71,11 +79,10 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
         return mWordLsits.size();
     }
 
-    private void clickWordList() {
-
-    }
-
-    private void clickDeleteIcon() {
-
+    private void gotoDictActivity(WordList wordList) {
+        String word = wordList.getWord();
+        Intent intent = new Intent(MyApplication.getContext(), DictAvtivity.class);
+        intent.putExtra("searchedword", word);
+        context.startActivity(intent);
     }
 }
