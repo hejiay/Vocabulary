@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/delete_word"
+        android:title="删除此单词"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/change_sound"
+        android:title="切换发音"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/auto_play"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:title="自动发音"
+        app:showAsAction="never" />
+</menu>

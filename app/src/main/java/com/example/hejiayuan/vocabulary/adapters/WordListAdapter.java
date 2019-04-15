@@ -1,13 +1,17 @@
 package com.example.hejiayuan.vocabulary.adapters;
 
+import android.app.AlertDialog;
 import android.app.Application;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,12 +23,16 @@ import com.example.hejiayuan.vocabulary.databases.WordList;
 import com.example.hejiayuan.vocabulary.entities.Dict;
 import com.example.hejiayuan.vocabulary.utils.MyApplication;
 
+import org.litepal.LitePal;
+
 import java.util.List;
 
 public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHolder>{
     private List<WordList> mWordLsits;
 
-    private Context context;
+    private Context context = null;
+
+    private View layout;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         View wordListView;
@@ -61,7 +69,12 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
         holder.imgBtnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MyApplication.getContext(), "点击删除", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MyApplication.getContext(), "删除成功", Toast.LENGTH_SHORT).show();
+                int position = holder.getAdapterPosition();
+                WordList wordList = mWordLsits.get(position);
+                String word = wordList.getWord();
+                deleteFromWordList(word);
+                mWordLsits.remove(position);
             }
         });
         return holder;
@@ -83,6 +96,37 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
         String word = wordList.getWord();
         Intent intent = new Intent(MyApplication.getContext(), DictAvtivity.class);
         intent.putExtra("searchedword", word);
-        context.startActivity(intent);
+        context.startActivity(intent);//第一次会报错，空指针对象
+    }
+
+//    public void showAddDialog(String word) {
+//        AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+//        dialog.setIcon(R.mipmap.dialog);
+//        dialog.setTitle("删除");
+//        dialog.setMessage("确定把 " + word +" 从单词本删除么？");
+//        dialog.setPositiveButton("确定", new BDictDialogConfirmClickLis(word));
+//        dialog.setNegativeButton("取消", null);
+//        AlertDialog alertDialog = dialog.create();
+//        alertDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+//        alertDialog.show();
+//    }
+
+//    class BDictDialogConfirmClickLis implements DialogInterface.OnClickListener {
+//        private String word = null;
+//
+//        public BDictDialogConfirmClickLis(String word) {
+//            this.word = word;
+//        }
+//
+//        @Override
+//        public void onClick(DialogInterface dialog, int which) {
+//            deleteFromWordList(word);
+//            Log.d("DictActivity.this", "删除成功");
+//
+//        }
+//    }
+
+    public void deleteFromWordList(String word) {
+        LitePal.deleteAll(WordList.class, "word = ?", word);
     }
 }

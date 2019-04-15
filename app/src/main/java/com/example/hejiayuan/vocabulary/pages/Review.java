@@ -1,73 +1,61 @@
 package com.example.hejiayuan.vocabulary.pages;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.TextView;
+import android.widget.RelativeLayout;
+import android.widget.Toolbar;
 
 import com.example.hejiayuan.vocabulary.R;
-import com.example.hejiayuan.vocabulary.activities.MainActivity;
-import com.jpeng.jptabbar.JPTabBar;
 
 public class Review extends Fragment implements View.OnClickListener, TextWatcher {
 
-    private EditText mNumberEt;
-    private ImageButton mMinusIb, mPlusIb;
-    private Button mShowTextBtn,mHideBtn,mShowCircleBtn;
-    private JPTabBar mTabBar;
 
+    private android.support.v7.widget.Toolbar toolbar;
+
+    private RelativeLayout relativeLayout = null;
+
+    private Button btnChangeToWordImformation;
+    public Review() {
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.review, null);
+
+        toolbar = layout.findViewById(R.id.id_review_toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         //init(layout);
+        initWidget(layout);
+        setOnClickLis();
         return layout;
     }
 
     private void init(View layout) {
-        mTabBar = ((MainActivity)getActivity()).getTabbar();
-        mShowTextBtn = (Button) layout.findViewById(R.id.button1);
-        mShowCircleBtn = (Button) layout.findViewById(R.id.button2);
-        mHideBtn = (Button) layout.findViewById(R.id.button3);
-        mNumberEt = (EditText) layout.findViewById(R.id.et_count);
-        mMinusIb = (ImageButton) layout.findViewById(R.id.imageButton1);
-        mPlusIb = (ImageButton) layout.findViewById(R.id.imageButton2);
-        mShowTextBtn.setOnClickListener(this);
-        mShowCircleBtn.setOnClickListener(this);
-        mHideBtn.setOnClickListener(this);
-        mNumberEt.addTextChangedListener(this);
-        mPlusIb.setOnClickListener(this);
-        mMinusIb.setOnClickListener(this);
+
     }
 
     @Override
     public void onClick(View v) {
-        int count = Integer.parseInt(mNumberEt.getText().toString());
-        if (v == mMinusIb) {
-            count--;
-            mNumberEt.setText(count + "");
-        } else if(v==mPlusIb) {
-            count++;
-            mNumberEt.setText(count + "");
-        }
-        else if(v==mShowTextBtn){
-            mTabBar.showBadge(0,"文字",true);
-        }
-        else if(v==mShowCircleBtn){
-            mTabBar.showCircleBadge(0,true);
-        }
-        else{
-            mTabBar.hideBadge(0);
-        }
+
     }
 
     @Override
@@ -81,23 +69,36 @@ public class Review extends Fragment implements View.OnClickListener, TextWatche
 
     @Override
     public void afterTextChanged(Editable s) {
-        if(s!=null&&s.toString().equals("0")){
-            mTabBar.showBadge(0, ""+0,true);
-            mTabBar.hideBadge(0);
-            return;
-        }
-        if (s.toString().equals("")) {
-            mTabBar.showBadge(0, ""+0,true);
-            return;
-        }
-        int count = Integer.parseInt(s.toString());
-        if(mTabBar!=null)
-            mTabBar.showBadge(0, count+"",true);
+
     }
 
     public void clearCount() {
-        //当徽章拖拽爆炸后,一旦View被销毁,不判断就会空指针异常
-        if(mNumberEt!=null)
-            mNumberEt.setText("0");
+
+    }
+
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.review_toolbar_item, menu);
+    }
+
+    public void initWidget(View layout) {
+        btnChangeToWordImformation = (Button) layout.findViewById(R.id.id_review_btn_change_wordinformation);
+        relativeLayout = (RelativeLayout) layout.findViewById(R.id.id_review_layout_wordinformation);
+    }
+
+    public void setOnClickLis() {
+        btnChangeToWordImformation.setOnClickListener(new ChangeToWordImformation());
+    }
+
+    class ChangeToWordImformation implements View.OnClickListener{
+
+        @Override
+        public void onClick(View v) {
+            relativeLayout.setVisibility(View.VISIBLE);
+            btnChangeToWordImformation.setVisibility(View.GONE);
+        }
     }
 }

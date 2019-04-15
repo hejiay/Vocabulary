@@ -206,7 +206,7 @@ public class DictAvtivity extends AppCompatActivity {
         setOnClickLis();
 
         LitePal.getDatabase();
-        
+
 
         new ThreadDictSearchWordAndSetInterface().start();
     }

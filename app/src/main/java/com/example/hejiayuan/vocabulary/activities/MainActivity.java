@@ -10,6 +10,7 @@ import android.view.View;
 
 import com.example.hejiayuan.vocabulary.R;
 import com.example.hejiayuan.vocabulary.adapters.MyPagerAdapter;
+import com.example.hejiayuan.vocabulary.adapters.WordListAdapter;
 import com.example.hejiayuan.vocabulary.pages.Note;
 import com.example.hejiayuan.vocabulary.pages.Review;
 import com.example.hejiayuan.vocabulary.pages.Setting;
@@ -20,6 +21,8 @@ import com.jpeng.jptabbar.OnTabSelectListener;
 import com.jpeng.jptabbar.anno.NorIcons;
 import com.jpeng.jptabbar.anno.SeleIcons;
 import com.jpeng.jptabbar.anno.Titles;
+
+import org.litepal.LitePal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +57,9 @@ public class MainActivity extends AppCompatActivity implements BadgeDismissListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        LitePal.getDatabase();
         init();
+
     }
 
     @Override
@@ -108,6 +113,8 @@ public class MainActivity extends AppCompatActivity implements BadgeDismissListe
                 }
             });
         }
+
+
     }
 
     public JPTabBar getTabbar() {

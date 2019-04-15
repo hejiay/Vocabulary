@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,13 +34,15 @@ public class Note extends Fragment implements View.OnClickListener, TextWatcher 
 
     WordListAdapter adapter;
 
-    Context context;
+    Context context = null;
 
     LinearLayoutManager layoutManager;
 
     RecyclerView recyclerView;
 
     View layout;
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -47,9 +50,8 @@ public class Note extends Fragment implements View.OnClickListener, TextWatcher 
         initWordList();//初始化单词本数据
         recyclerView = (RecyclerView) layout.findViewById(R.id.id_note_recyclerview);
         layoutManager = new LinearLayoutManager(null);
-        context = MyApplication.getContext();
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new WordListAdapter(wordLists, context);
+        adapter = new WordListAdapter(wordLists, MyApplication.getContext());
         recyclerView.setAdapter(adapter);
         refreshWordList(layout);//刷新操作
         return layout;
@@ -82,7 +84,7 @@ public class Note extends Fragment implements View.OnClickListener, TextWatcher 
                 .find(WordList.class);//从数据库中查询单词本中已有的数据
     }
 
-    private void refreshWordList(View layout) {
+    private void refreshWordList(final View layout) {
         swipeRefreshLayout = (SwipeRefreshLayout) layout.findViewById(R.id.id_note_swiperefresh);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -96,5 +98,9 @@ public class Note extends Fragment implements View.OnClickListener, TextWatcher 
                 swipeRefreshLayout.setRefreshing(false);///刷新结束，进度条隐藏
             }
         });
+    }
+
+    public static Context setContext(Context context) {
+        return context;
     }
 }

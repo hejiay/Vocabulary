@@ -7,9 +7,13 @@ public class WordList extends LitePalSupport {
 
     private String interpret;
 
-    private int learnTimes;
+    private int right;
 
-    private int unfamiliarTimes;
+    private int wrong;
+
+    private int grasp;
+
+    private int learned;
 
     public WordList() {
 
@@ -36,19 +40,35 @@ public class WordList extends LitePalSupport {
         this.interpret = interpret;
     }
 
-    public int getLearnTimes() {
-        return learnTimes;
+    public int getRight() {
+        return right;
     }
 
-    public void setLearnTimes(int learnTimes) {
-        this.learnTimes = learnTimes;
+    public void setRight(int right) {
+        this.right = right;
     }
 
-    public int getUnfamiliarTimes() {
-        return unfamiliarTimes;
+    public int getWrong() {
+        return wrong;
     }
 
-    public void setUnfamiliarTimes(int unfamiliarTimes) {
-        this.unfamiliarTimes = unfamiliarTimes;
+    public void setWrong(int wrong) {
+        this.wrong = wrong;
+    }
+
+    public int getGrasp() {
+        return grasp;
+    }
+
+    public void setGrasp(int grasp) {
+        this.grasp = grasp;
+    }
+
+    public int getLearned() {
+        return learned;
+    }
+
+    public void setLearned(int learned) {
+        this.learned = learned;
     }
 }

@@ -1,87 +1,99 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:padding="15dp"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_height="match_parent">
+    android:padding="2dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="消息测试"
-        android:layout_marginBottom="10dp"
-        android:textSize="19sp"
-        android:id="@+id/textView"/>
-
-    <LinearLayout
-        android:orientation="horizontal"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/id_review_toolbar"
         android:layout_width="match_parent"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:layout_height="wrap_content">
+        android:layout_height="80dp"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-        <ImageButton
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@null"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-            android:scaleType="fitXY"
-            android:src="@mipmap/minus_50"
-            android:id="@+id/imageButton1"/>
+            <ImageButton
+                android:id="@+id/id_review_toolbar_back"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center_vertical"
+                android:background="?attr/colorPrimary"
+                android:scaleType="fitCenter"
+                android:src="@mipmap/review_back" />
 
-        <ImageButton
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@null"
-            android:scaleType="fitXY"
-            android:layout_marginLeft="20dp"
-            android:src="@mipmap/plus_50"
-            android:id="@+id/imageButton2"/>
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                tools:layout_width="wrap_content">
 
-    <LinearLayout
-        android:orientation="horizontal"
+                <TextView
+                    android:id="@+id/id_review_text_word"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="120dp"
+                    android:text="hello"
+                    android:textSize="28sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/id_review_text_word_pse"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="110dp"
+                        android:text="英[ ]"
+                        android:textSize="18sp"/>
+
+                    <ImageButton
+                        android:id="@+id/id_review_btn_player"
+                        android:layout_width="20dp"
+                        android:layout_height="26dp"
+                        android:src="@mipmap/player"
+                        android:layout_gravity=""
+                        android:scaleType="fitCenter"
+                        android:background="?attr/colorPrimary"/>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </android.support.v7.widget.Toolbar>
+
+    <Button
+        android:id="@+id/id_review_btn_change_wordinformation"
         android:layout_width="match_parent"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:singleLine="false"
+        android:text="请把英文发音和中文释义说出口\n点击屏幕查看答案"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:background="#ffff">
+    </Button>
+
+    <RelativeLayout
+        android:id="@+id/id_review_layout_wordinformation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-            android:text="当前的消息个数为:"
-            android:textSize="15sp"
-            />
-
-        <EditText
-            android:id="@+id/et_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textColor="#f00"
-            android:text="50"
-
-            android:inputType="number"
-            android:layout_marginLeft="20dp"
-            />
-    </LinearLayout>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="显示文字"
-        android:id="@+id/button1"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="显示圆点"
-        android:id="@+id/button2"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="隐藏徽章"
-        android:id="@+id/button3"/>
+            android:text="欢迎"/>
+    </RelativeLayout>
 </LinearLayout>
