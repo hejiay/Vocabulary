@@ -72,7 +72,8 @@ public class DataBaseHelperReview extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
+        db.execSQL("create table reviewlist(word text,interpret text," +
+                "right int,wrong int,grasp int,learned int)");
     }
 
     @Override

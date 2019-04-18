@@ -9,10 +9,4 @@
         android:id="@+id/change_sound"
         android:title="切换发音"
         app:showAsAction="never" />
-    <item
-        android:id="@+id/auto_play"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:title="自动发音"
-        app:showAsAction="never" />
 </menu>

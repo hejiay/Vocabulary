@@ -55,4 +55,17 @@ public class WordInfo {
     public void setGrasp(int grasp) {
         this.grasp = grasp;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+       // return super.equals(obj);
+        if (obj instanceof WordInfo) {
+            if (((WordInfo) obj).getWord().equals(WordInfo.this.getWord())) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
+    }
 }

@@ -95,7 +95,7 @@ public class ContentHandler extends DefaultHandler {
             interpret = interpret + str + "\n";
             interpret = wordValue.getInterpret() + interpret;
             wordValue.setInterpret(interpret);
-            Log.d("DictAvtivity.this", 7 + interpret);
+            //Log.d("DictAvtivity.this", 7 + interpret);
             interpret = "";//初始化操作，预防有多个释义
         } else if ("orig".equals(tagName)) {
             orig = wordValue.getSentOrig();

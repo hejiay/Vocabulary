@@ -4,12 +4,18 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.hejiayuan.vocabulary.databases.DataBaseHelperReview;
+import com.example.hejiayuan.vocabulary.databases.WordList;
 import com.example.hejiayuan.vocabulary.entities.WordInfo;
+import com.example.hejiayuan.vocabulary.utils.MyApplication;
+
+import org.litepal.LitePal;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -33,6 +39,8 @@ public class WordBox {
     public final static int UNLEARNED = 0;//未学习过该单词标志
 
     public static int process = GRASP_89; //总学习进度控制变量
+
+
     public static int wordCount = 0;//某一复习阶段背的单词数
     public static boolean processWrong = false;//是否开始背错误的单词
 
@@ -77,9 +85,13 @@ public class WordBox {
     public int getWordCountByGrasp(int grasp, int learned) {
         Cursor cursor = dbR.query(tableName, new String[]{"word"}, "grasp = ? and learned = ?",
                 new String[]{grasp + "", learned + ""}, null, null, null);
-        int count = cursor.getCount();
-        cursor.close();
-        return count;
+        if (cursor == null) {
+            return 0;
+        } else {
+            int count = cursor.getCount();
+            cursor.close();
+            return count;
+        }
     }
 
     /**
@@ -151,7 +163,7 @@ public class WordBox {
         int graspInt = graspsNotEmpty.get(rand.nextInt(length));//随机确定一个掌握程度
         int count = getWordCountByGrasp(graspInt, learned);//确定该掌握程度单词数,获得Cursor对象，用move方法进行随机移动
         int index = rand.nextInt(count) + 1;
-        Cursor cursor = dbR.query(tableName, new String[]{ "word ", "right", "wrong", "grasp" }, "grasp = ? and learned = ?",
+        Cursor cursor = dbR.query(tableName, new String[]{ "word ", "interpret", "right", "wrong", "grasp" }, "grasp = ? and learned = ?",
                 new String[] {graspInt + "", learned + ""}, null, null, null);
         cursor.move(index);
         String word = cursor.getString(cursor.getColumnIndex("word"));
@@ -205,12 +217,19 @@ public class WordBox {
     public WordInfo popWord() {
         WordInfo wordInfo = null;
 
+        /**
+         * 打印参数信息
+         */
+        Log.d(MyApplication.getContext().toString(), logProgress[process]);
+        Log.d(MyApplication.getContext().toString(), logLearn[processLearnNewWord]);
+
         if (processWrong) {
             return getWrongWord();
         }
         switch (process) {
             case GRASP_89: {
-                if ((wordInfo = getWordByAccurateGrasp(GRASP_89, GRASP_67, 0.1)) != null)
+                if ((wordInfo =
+                        getWordByAccurateGrasp(GRASP_89, GRASP_67, 0.1)) != null)
                     return wordInfo;
             }
             case GRASP_67: {
@@ -269,7 +288,7 @@ public class WordBox {
         //更新数据库
         ContentValues values = new ContentValues();
         values.put("right", right);
-        values.put("wrong", word);
+        values.put("wrong", wrong);
         values.put("grasp", graspInt);
         values.put("learned", LEARNED);
         dbW.update(tableName, values, "word = ?", new String[] { word });

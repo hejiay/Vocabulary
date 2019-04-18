@@ -2,10 +2,10 @@ package com.example.hejiayuan.vocabulary.activities;
 
 
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
 import android.os.Looper;
@@ -14,33 +14,26 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.hejiayuan.vocabulary.databases.DataBaseHelperDict;
+import com.example.hejiayuan.vocabulary.databases.DataBaseHelperReview;
 import com.example.hejiayuan.vocabulary.databases.WordList;
 import com.example.hejiayuan.vocabulary.entities.Dict;
-import com.example.hejiayuan.vocabulary.adapters.DictSentenceListAdapter;
 import com.example.hejiayuan.vocabulary.utils.Mp3Player;
 import com.example.hejiayuan.vocabulary.R;
 import com.example.hejiayuan.vocabulary.entities.WordValue;
 import com.example.hejiayuan.vocabulary.utils.MyApplication;
 
 import org.litepal.LitePal;
-import org.litepal.LitePalApplication;
-import org.litepal.LitePalBase;
-import org.litepal.LitePalDB;
-import org.litepal.crud.LitePalSupport;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class DictAvtivity extends AppCompatActivity {
@@ -66,9 +59,9 @@ public class DictAvtivity extends AppCompatActivity {
 
     public WordValue w = null;
 
-//    public DataBaseHelperDict dbGlossaryHelper = null;//需注意
-//    public SQLiteDatabase dbGlossaryR = null;
-//    public SQLiteDatabase dbGlossaryW = null;
+    public DataBaseHelperReview dbReviewHelper = null;//需注意
+    public SQLiteDatabase dbReviewR = null;
+    public SQLiteDatabase dbReviewW = null;
 
 //    public WordList wordList = null;
 
@@ -101,9 +94,10 @@ public class DictAvtivity extends AppCompatActivity {
 //        wordList = new WordList();
         mp3Box = new Mp3Player(DictAvtivity.this, "dict");
         //需注意
-//        dbGlossaryHelper = new DataBaseHelperDict(DictAvtivity.this, "glossary");
-//        dbGlossaryR = dbGlossaryHelper.getReadableDatabase();
-//        dbGlossaryW = dbGlossaryHelper.getWritableDatabase();
+
+        dbReviewHelper = new DataBaseHelperReview(DictAvtivity.this, "reviewlist");
+        dbReviewR = dbReviewHelper.getReadableDatabase();
+        dbReviewW = dbReviewHelper.getWritableDatabase();
 
         dictHandler = new Handler(Looper.getMainLooper());
 
@@ -136,10 +130,12 @@ public class DictAvtivity extends AppCompatActivity {
         String phoSymEng = w.getPsE();
         String phoSymUSA = w.psA;
         String interpret = w.getInterpret();
-        ArrayList<String> sentList = w.getOrigList();
-        ArrayList<String> sentInChineseList = w.getTransList();
+//        ArrayList<String> sentList = w.getOrigList();
+//        ArrayList<String> sentInChineseList = w.getTransList();
+        String sentOrig = w.getSentOrig();
+        String sentTrans = w.getSentTrans();
         dictHandler.post(new RunnableDictSetTextInterface(searchedWord,
-                phoSymEng, phoSymUSA, interpret, sentList, sentInChineseList));
+                phoSymEng, phoSymUSA, interpret, sentOrig, sentTrans));
         if (phoSymEng.equals("") == false && phoSymUSA.equals("") == false) { //只有有音标时才去下载
             mp3Box.playMusicByWord(searchedWord, Mp3Player.ENGLISH_ACCENT, true, false);
             mp3Box.playMusicByWord(searchedWord, Mp3Player.USA_ACCENT, true, false);
@@ -187,6 +183,14 @@ public class DictAvtivity extends AppCompatActivity {
             wordList.setWord(w.getWord());
             wordList.setInterpret(w.getInterpret());
             wordList.save();
+            ContentValues values = new ContentValues();
+            values.put("word", w.getWord());
+            values.put("interpret", w.getInterpret());
+            values.put("right", 0);
+            values.put("wrong", 0);
+            values.put("grasp", 0);
+            values.put("learned", 0);
+            dbReviewW.insert("reviewlist", null, values);
             Toast.makeText(DictAvtivity.this, "添加成功", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(DictAvtivity.this, searchedWord + " 已存在", Toast.LENGTH_SHORT).show();
@@ -236,43 +240,53 @@ public class DictAvtivity extends AppCompatActivity {
         String phoSymEng = null;
         String phoSymUSA = null;
         String interpret = null;
-        ArrayList<String> sentList = null;
-        ArrayList<String> sentInChineseList = null;
+//        ArrayList<String> sentList = null;
+//        ArrayList<String> sentInChineseList = null;
+        String sentOrig = null;
+        String sentTrans = null;
 
-        public RunnableDictSetTextInterface(String searchStr, String phoSymEng, String phoSymUSA, String interpret, ArrayList<String> sentList, ArrayList<String> sentInChineseList) {
+        public RunnableDictSetTextInterface(String searchStr, String phoSymEng, String phoSymUSA, String interpret, String sentOrig, String sentTrans) {
             super();
             this.searchStr = searchStr;
             this.phoSymEng = "英[" + phoSymEng + "]";
             this.phoSymUSA = "美[" + phoSymUSA + "]";
             this.interpret = interpret;
-            this.sentList = sentList;
-            this.sentInChineseList = sentInChineseList;
+            this.sentOrig = sentOrig;
+            this.sentTrans = sentTrans;
         }
 
         @Override
         public void run() {
-            textDictWord.setText(searchStr);
-            textDictPhonSymbolEng.setText(phoSymEng);
-            textDictPhonSymbolUSA.setText(phoSymUSA);
-            textDictInterpret.setText(interpret);
-            if (sentList == null || sentInChineseList == null) {
+            if (searchStr == null) {
+                textDictWord.setHint("请在此输入要查找的单词");
                 return;
-            }
-            int count = 0;
-            if (sentList.size() <= sentInChineseList.size()) {
-                count = sentList.size();
             } else {
-                count = sentInChineseList.size();//保护机制，这里取两者长度最小者，一般相等
+                textDictWord.setText(searchStr);
+                textDictPhonSymbolEng.setText(phoSymEng);
+                textDictPhonSymbolUSA.setText(phoSymUSA);
+                textDictInterpret.setText(interpret);
+                if (sentOrig == null || sentTrans == null) {
+                    return;
+                }
+                String sentorig[] = sentOrig.split("[\\. \\? \\!][\\n]");
+                String senttrans[] = sentTrans.split("[\\.\\? \\!][\\n]");
+                Log.d(MyApplication.getContext().toString(), sentorig.length + "英文长度");
+                Log.d(MyApplication.getContext().toString(), senttrans.length + "中文长度");
+                ArrayList<String> sentenceLists = new ArrayList<>();
+                ArrayList<String> origLists = new ArrayList<String>();
+                ArrayList<String> transLists = new ArrayList<String>();
+                for (int i = 0; i < (sentorig.length >= senttrans.length ? senttrans.length : sentorig.length); i++) {
+                    int index = i + 1;
+                    origLists.add("( " + index + " )" + sentorig[i] + ".");
+                    transLists.add(senttrans[i] + ".");
+                    sentenceLists.add(origLists.get(i));
+                    sentenceLists.add(transLists.get(i));
+                }
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                        MyApplication.getContext(), android.R.layout.simple_list_item_1, sentenceLists
+                );
+                listViewDictSentence.setAdapter(adapter);
             }
-            ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
-            for (int i=0; i<count; i++) {
-                HashMap<String, Object> map = new HashMap<>();
-                map.put("sentence", sentList.get(i) + "\n" + sentInChineseList);
-                list.add(map);
-            }
-            DictSentenceListAdapter adapter=new DictSentenceListAdapter(DictAvtivity.this, R.layout.dict_sentence_list_item,
-                    list, new String[]{"sentence"}, new int[]{R.id.text_dict_sentence_list_item});
-            listViewDictSentence.setAdapter(adapter);
         }
     }
 

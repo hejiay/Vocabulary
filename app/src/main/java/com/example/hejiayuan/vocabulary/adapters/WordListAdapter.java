@@ -99,33 +99,6 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
         context.startActivity(intent);//第一次会报错，空指针对象
     }
 
-//    public void showAddDialog(String word) {
-//        AlertDialog.Builder dialog = new AlertDialog.Builder(context);
-//        dialog.setIcon(R.mipmap.dialog);
-//        dialog.setTitle("删除");
-//        dialog.setMessage("确定把 " + word +" 从单词本删除么？");
-//        dialog.setPositiveButton("确定", new BDictDialogConfirmClickLis(word));
-//        dialog.setNegativeButton("取消", null);
-//        AlertDialog alertDialog = dialog.create();
-//        alertDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
-//        alertDialog.show();
-//    }
-
-//    class BDictDialogConfirmClickLis implements DialogInterface.OnClickListener {
-//        private String word = null;
-//
-//        public BDictDialogConfirmClickLis(String word) {
-//            this.word = word;
-//        }
-//
-//        @Override
-//        public void onClick(DialogInterface dialog, int which) {
-//            deleteFromWordList(word);
-//            Log.d("DictActivity.this", "删除成功");
-//
-//        }
-//    }
-
     public void deleteFromWordList(String word) {
         LitePal.deleteAll(WordList.class, "word = ?", word);
     }

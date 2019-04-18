@@ -219,6 +219,8 @@
         android:background="@layout/layer_list_dict_item_back"
         android:divider="#8C8C8C"
         android:dividerHeight="0px"
-        ></ListView>
+        />
+
+
 
 </RelativeLayout>

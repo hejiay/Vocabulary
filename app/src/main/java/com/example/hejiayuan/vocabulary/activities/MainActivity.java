@@ -1,10 +1,16 @@
 package com.example.hejiayuan.vocabulary.activities;
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 
@@ -59,12 +65,12 @@ public class MainActivity extends AppCompatActivity implements BadgeDismissListe
         setContentView(R.layout.activity_main);
         LitePal.getDatabase();
         init();
+        ActivityCompat.requestPermissions((Activity) MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
 
     }
 
     @Override
     public void onDismiss(int position) {
-        reviewTab.clearCount();
     }
 
     @Override
@@ -120,4 +126,5 @@ public class MainActivity extends AppCompatActivity implements BadgeDismissListe
     public JPTabBar getTabbar() {
         return mTabbar;
     }
+
 }
