@@ -17,6 +17,8 @@ import android.widget.Toast;
 import com.example.hejiayuan.vocabulary.R;
 import com.example.hejiayuan.vocabulary.utils.Log;
 import com.example.hejiayuan.vocabulary.utils.MyApplication;
+import com.example.hejiayuan.vocabulary.utils.StartService;
+import com.example.hejiayuan.vocabulary.utils.StopService;
 
 import java.util.Calendar;
 
@@ -89,9 +91,13 @@ public class ClockActivity extends AppCompatActivity {
             if (isChecked) {
                 storeSwitch(true);
                 timePickerText.setClickable(true);
+                new StartService(ClockActivity.this).startService();
             } else {
                 storeSwitch(false);
                 timePickerText.setClickable(false);
+                StopService stopService = new StopService(ClockActivity.this);
+                stopService.stopStartClockService();
+                //stopService.stopClockService();
             }
         }
     }
@@ -114,7 +120,9 @@ public class ClockActivity extends AppCompatActivity {
                     }
                     timePickerText.setText(timeStr.append(String.valueOf(hourOfDay)).append(":").append(strMinute));
                     SharedPreferences.Editor editor = timeSP.edit();
-                    editor.putString("timer", timePickerText.getText().toString());
+                    //editor.putString("timer", timePickerText.getText().toString());
+                    editor.putInt("hour", hourOfDay);
+                    editor.putInt("minute", minute);
                     editor.commit();
                 }
             }, hour, myMinute, true).show();
@@ -125,7 +133,32 @@ public class ClockActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         remindSwitch.setChecked(switchSP.getBoolean("isChecked", false));
-        timePickerText.setText(timeSP.getString("timer", "不提醒"));
+        int hourInt = timeSP.getInt("hour",0);
+        int minuteInt = timeSP.getInt("minute", 0);
+        if (timeStr.length() > 0) {
+            timeStr.delete(0, timeStr.length());
+        }
+        String strMinute;
+        if (minuteInt <= 9) {
+            strMinute = "0" + String.valueOf(minuteInt);
+        } else {
+            strMinute = String.valueOf(minuteInt);
+        }
+        timePickerText.setText(timeStr.append(hourInt).append(":").append(strMinute));
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        int hourInt = timeSP.getInt("hour",0);
+        int minuteInt = timeSP.getInt("minute", 0);
+        String strMinute;
+        if (minuteInt <= 9) {
+            strMinute = "0" + String.valueOf(minuteInt);
+        } else {
+            strMinute = String.valueOf(minuteInt);
+        }
+        timePickerText.setText(timeStr.append(hourInt).append(":").append(strMinute));
     }
 
     public void storeSwitch(boolean isChecked) {

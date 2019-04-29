@@ -85,7 +85,7 @@ public class Review extends Fragment implements View.OnClickListener, TextWatche
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
+        //setHasOptionsMenu(true);
 
     }
 
@@ -93,8 +93,8 @@ public class Review extends Fragment implements View.OnClickListener, TextWatche
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.review, null);
 
-        toolbar = layout.findViewById(R.id.id_review_toolbar);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        //toolbar = layout.findViewById(R.id.id_review_toolbar);
+        //((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         init();
         initWidget(layout);
         initWord();

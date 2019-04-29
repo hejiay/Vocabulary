@@ -22,6 +22,9 @@ import com.example.hejiayuan.vocabulary.pages.Review;
 import com.example.hejiayuan.vocabulary.pages.Setting;
 import com.example.hejiayuan.vocabulary.pages.Statistics;
 import com.example.hejiayuan.vocabulary.service.ClockService;
+import com.example.hejiayuan.vocabulary.service.StartClockService;
+import com.example.hejiayuan.vocabulary.utils.GetSharedPre;
+import com.example.hejiayuan.vocabulary.utils.StartService;
 import com.jpeng.jptabbar.BadgeDismissListener;
 import com.jpeng.jptabbar.JPTabBar;
 import com.jpeng.jptabbar.OnTabSelectListener;
@@ -67,8 +70,10 @@ public class MainActivity extends AppCompatActivity implements BadgeDismissListe
         LitePal.getDatabase();
         init();
         ActivityCompat.requestPermissions((Activity) MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-        Intent intent = new Intent(MainActivity.this, ClockService.class);
-        MainActivity.this.startService(intent);
+        if (GetSharedPre.getSharedOfSwitch() == true) {
+            com.example.hejiayuan.vocabulary.utils.Log.log("闹钟已打开");
+            new StartService(this).startService();
+        }
     }
 
     @Override
@@ -121,8 +126,6 @@ public class MainActivity extends AppCompatActivity implements BadgeDismissListe
                 }
             });
         }
-
-
     }
 
     public JPTabBar getTabbar() {

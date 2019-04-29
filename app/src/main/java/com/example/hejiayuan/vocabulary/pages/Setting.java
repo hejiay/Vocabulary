@@ -31,6 +31,8 @@ public class Setting extends Fragment implements View.OnClickListener, TextWatch
     private TextView remindText;
 
     public boolean switchOn;
+
+    StringBuffer timeStr = new StringBuffer();
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.setting, null);
@@ -100,8 +102,18 @@ public class Setting extends Fragment implements View.OnClickListener, TextWatch
     public void setRemindText() {
         switchOn = switchSP.getBoolean("isChecked", false);
         if (switchOn == true) {
-            String timeStr = timeSP.getString("timer", "");
-            remindText.setText(timeStr);
+            if (timeStr.length() > 0) {
+                timeStr.delete(0, timeStr.length());
+            }
+            int hourInt = timeSP.getInt("hour", 0);
+            int minuteInt = timeSP.getInt("minute", 0);
+            String strMinute;
+            if (minuteInt <= 9) {
+                strMinute = "0" + String.valueOf(minuteInt);
+            } else {
+                strMinute = String.valueOf(minuteInt);
+            }
+            remindText.setText(timeStr.append(hourInt).append(":").append(strMinute));
         } else {
             remindText.setText("不提醒");
         }
