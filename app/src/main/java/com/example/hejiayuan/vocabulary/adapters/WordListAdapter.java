@@ -96,7 +96,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
         String word = wordList.getWord();
         Intent intent = new Intent(MyApplication.getContext(), DictAvtivity.class);
         intent.putExtra("searchedword", word);
-        context.startActivity(intent);//第一次会报错，空指针对象
+        MyApplication.getContext().startActivity(intent);//第一次会报错，空指针对象
     }
 
     public void deleteFromWordList(String word) {

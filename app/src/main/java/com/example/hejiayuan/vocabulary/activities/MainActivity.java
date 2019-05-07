@@ -17,6 +17,7 @@ import android.view.View;
 import com.example.hejiayuan.vocabulary.R;
 import com.example.hejiayuan.vocabulary.adapters.MyPagerAdapter;
 import com.example.hejiayuan.vocabulary.adapters.WordListAdapter;
+import com.example.hejiayuan.vocabulary.chartutils.AWeekChartDataHelper;
 import com.example.hejiayuan.vocabulary.pages.Note;
 import com.example.hejiayuan.vocabulary.pages.Review;
 import com.example.hejiayuan.vocabulary.pages.Setting;
@@ -74,6 +75,8 @@ public class MainActivity extends AppCompatActivity implements BadgeDismissListe
             com.example.hejiayuan.vocabulary.utils.Log.log("闹钟已打开");
             new StartService(this).startService();
         }
+        AWeekChartDataHelper aWeekChartDataHelper = new AWeekChartDataHelper("reviewlist");
+        aWeekChartDataHelper.getCountGroupByLastLearnTime();
     }
 
     @Override

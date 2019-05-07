@@ -6,6 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.sql.Date;
+import java.util.List;
+
 public class DataBaseHelperReview extends SQLiteOpenHelper {
 
     public Context mContext = null;
@@ -73,11 +76,13 @@ public class DataBaseHelperReview extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table reviewlist(word text,interpret text," +
-                "right int,wrong int,grasp int,learned int)");
+                "right int,wrong int,grasp int,learned int, addDate timestamp not null default (datetime('now','localtime'))," +
+                "lastLearntime INTEGER)");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
     }
+
 }

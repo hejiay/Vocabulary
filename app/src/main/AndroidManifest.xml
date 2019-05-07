@@ -34,11 +34,6 @@
 
         <activity android:name=".activities.ClockActivity" />
 
-        <receiver
-            android:name=".receiver.ClockRecevier"
-            android:enabled="true"
-            android:exported="true" />
-
         <service
             android:name=".service.StartClockService"
             android:enabled="true"

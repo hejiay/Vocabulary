@@ -1,11 +1,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="15dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <android.support.design.widget.TabLayout
+        android:id="@+id/id_statistics_tablayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="统计"/>
+        android:background="#E0E0E0"
+        app:tabIndicatorColor="#fc612d"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="#fc612d"
+        app:tabTextColor="#151515"
+        app:tabIndicatorHeight="3dp"
+        app:tabTextAppearance="@style/TabLayoutTextSize">
+    </android.support.design.widget.TabLayout>
+    
+    <android.support.v4.view.ViewPager
+        android:id="@+id/id_statistics_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#ffff">
+    </android.support.v4.view.ViewPager>
 </LinearLayout>

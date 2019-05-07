@@ -20,7 +20,6 @@ import android.view.View;
 
 import com.example.hejiayuan.vocabulary.R;
 import com.example.hejiayuan.vocabulary.activities.MainActivity;
-import com.example.hejiayuan.vocabulary.receiver.ClockRecevier;
 import com.example.hejiayuan.vocabulary.utils.Log;
 
 import java.util.Calendar;

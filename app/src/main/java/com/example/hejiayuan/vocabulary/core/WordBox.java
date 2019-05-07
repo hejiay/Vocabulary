@@ -13,11 +13,16 @@ import com.example.hejiayuan.vocabulary.utils.MyApplication;
 
 import org.litepal.LitePal;
 
+import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadPoolExecutor;
+
+import static android.icu.text.MessagePattern.ArgType.SELECT;
 
 public class WordBox {
     public Context context = null;
@@ -291,6 +296,7 @@ public class WordBox {
         values.put("wrong", wrong);
         values.put("grasp", graspInt);
         values.put("learned", LEARNED);
+        values.put("lastLearntime", new java.util.Date().getTime());
         dbW.update(tableName, values, "word = ?", new String[] { word });
 
         //若出错，将数据存在出错队列中

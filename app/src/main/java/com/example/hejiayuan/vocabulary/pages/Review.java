@@ -161,7 +161,6 @@ public class Review extends Fragment implements View.OnClickListener, TextWatche
                 wordBox.feedBack(wordInfo, true);
                 if (learnedLists.contains(wordInfo) == false) {
                     learnedLists.add(wordInfo);
-                    Log.d(MyApplication.getContext().toString(), arrayListPosition + "记住位置");
                     arrayListPosition ++;
                 }
                 wordInfo = wordBox.popWord();
@@ -260,7 +259,6 @@ public class Review extends Fragment implements View.OnClickListener, TextWatche
             wordBox.feedBack(wordInfo, true);
             if (learnedLists.contains(wordInfo) == false) {
                 learnedLists.add(wordInfo);
-                Log.d(MyApplication.getContext().toString(), arrayListPosition + "记住位置");
                 arrayListPosition ++;
             }
             wordInfo = wordBox.popWord();
@@ -288,7 +286,6 @@ public class Review extends Fragment implements View.OnClickListener, TextWatche
             wordBox.feedBack(wordInfo, false);
             if (learnedLists.contains(wordInfo) == false) {
                 learnedLists.add(wordInfo);
-                Log.d(MyApplication.getContext().toString(), arrayListPosition + "错误位置");
                 arrayListPosition ++;
             }
             wordInfo = wordBox.popWord();
