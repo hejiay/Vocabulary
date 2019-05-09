@@ -1,20 +1,12 @@
 package com.example.hejiayuan.vocabulary.databases;
 
-import org.litepal.crud.LitePalSupport;
 
-public class WordList extends LitePalSupport {
+public class WordList {
     private String word;
 
     private String interpret;
 
-    private int right;
-
-    private int wrong;
-
     private int grasp;
-
-    private int learned;
-
     public WordList() {
 
     }
@@ -22,6 +14,20 @@ public class WordList extends LitePalSupport {
     public WordList(String word, String interpret) {
         this.word = word;
         this.interpret = interpret;
+    }
+
+    public WordList(String word, String interpret, int grasp) {
+        this.word = word;
+        this.interpret = interpret;
+        this.grasp = grasp;
+    }
+
+    public int getGrasp() {
+        return grasp;
+    }
+
+    public void setGrasp(int grasp) {
+        this.grasp = grasp;
     }
 
     public String getWord() {
@@ -40,35 +46,4 @@ public class WordList extends LitePalSupport {
         this.interpret = interpret;
     }
 
-    public int getRight() {
-        return right;
-    }
-
-    public void setRight(int right) {
-        this.right = right;
-    }
-
-    public int getWrong() {
-        return wrong;
-    }
-
-    public void setWrong(int wrong) {
-        this.wrong = wrong;
-    }
-
-    public int getGrasp() {
-        return grasp;
-    }
-
-    public void setGrasp(int grasp) {
-        this.grasp = grasp;
-    }
-
-    public int getLearned() {
-        return learned;
-    }
-
-    public void setLearned(int learned) {
-        this.learned = learned;
-    }
 }

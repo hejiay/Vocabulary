@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
 import android.os.Looper;
@@ -174,15 +175,12 @@ public class DictAvtivity extends AppCompatActivity {
             Toast.makeText(DictAvtivity.this, "单词格式错误", Toast.LENGTH_SHORT).show();
             return;//若不是有效单词则不能添加单词本
         }
-        List<WordList> queryWords = LitePal.select("word")
-                .where("word = ?", searchedWord)
-                .find(WordList.class);
-       boolean isSuccess = queryWords.isEmpty();
-        if (isSuccess) { // 判断若单词本中已有该单词就不再加入
-            WordList wordList = new WordList();
-            wordList.setWord(w.getWord());
-            wordList.setInterpret(w.getInterpret());
-            wordList.save();
+//        List<WordList> queryWords = LitePal.select("word")
+//                .where("word = ?", searchedWord)
+//                .find(WordList.class);
+        Cursor cursor = dbReviewR.query("reviewlist", new String[] { "word "}, "word = ?", new String[]{searchedWord}, null, null, null);
+       int isSuccess = cursor.getCount();
+        if (isSuccess == 0) { // 判断若单词本中已有该单词就不再加入
             ContentValues values = new ContentValues();
             values.put("word", w.getWord());
             values.put("interpret", w.getInterpret());
@@ -208,9 +206,6 @@ public class DictAvtivity extends AppCompatActivity {
         initial();
         getIntentFromWordList();
         setOnClickLis();
-
-        LitePal.getDatabase();
-
 
         new ThreadDictSearchWordAndSetInterface().start();
     }

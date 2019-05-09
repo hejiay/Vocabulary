@@ -1,8 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:jp="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:jp="http://schemas.android.com/tools"
     android:clipChildren="false">
 
     <android.support.v4.view.ViewPager
@@ -18,7 +18,7 @@
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:background="@drawable/tab_bg"
-        app:TabMiddleView="@layout/view_mitem"
+        jp:TabMiddleView="@layout/view_item"
         app:TabAnimate="Scale"
         />
 </RelativeLayout>

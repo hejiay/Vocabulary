@@ -1,0 +1,7 @@
+<resources>
+    <string-array name="spinner_wordgrasp">
+        <item>熟悉</item>
+        <item>模糊</item>
+        <item>陌生</item>
+    </string-array>
+</resources>

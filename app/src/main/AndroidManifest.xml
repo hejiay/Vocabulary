@@ -12,9 +12,10 @@
         android:name=".utils.MyApplication"
         android:allowBackup="true"
         android:configChanges="orientation|keyboardHidden"
-        android:icon="@mipmap/vocabulary"
-        android:label="乐享单词"
-        android:roundIcon="@mipmap/vocabulary"
+        android:icon="@mipmap/english"
+        android:label="i词"
+
+        android:roundIcon="@mipmap/english"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">

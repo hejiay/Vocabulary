@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DataBaseHelperReview extends SQLiteOpenHelper {
@@ -85,4 +86,62 @@ public class DataBaseHelperReview extends SQLiteOpenHelper {
 
     }
 
+    public List<WordList> queryWordByGrasp(int fromGrasp, int toGrasp) {
+        List<WordList> wordLists = new ArrayList<>();
+        Cursor cursor = dbR.query(tableName, new String[]{ "word", "interpret" }, "grasp >= ? and grasp <= ?",
+                new String[]{ String.valueOf(fromGrasp), String.valueOf(toGrasp)}, null, null, null);
+        while (cursor.moveToNext()) {
+            String word = cursor.getString(cursor.getColumnIndex("word"));
+            String interpret = cursor.getString(cursor.getColumnIndex("interpret"));
+            wordLists.add(new WordList(word, interpret));
+        }
+        return wordLists;
+    }
+
+    public List<WordList> queryWordOrderByAddDate() {
+        List<WordList> wordLists = new ArrayList<>();
+        Cursor cursor = dbR.query(tableName, new String[]{ "word", "interpret" }, null, null, null, null, "addDate");
+        while (cursor.moveToNext()) {
+            String word = cursor.getString(cursor.getColumnIndex("word"));
+            String interpret = cursor.getString(cursor.getColumnIndex("interpret"));
+            wordLists.add(new WordList(word, interpret));
+        }
+        return wordLists;
+    }
+
+    public List<WordList> queryWordOrderByGrasp() {
+        List<WordList> wordLists = new ArrayList<>();
+        Cursor cursor = dbR.query(tableName, new String[]{ "word", "interpret" }, null, null, null,
+                null, "grasp desc" );
+        while (cursor.moveToNext()) {
+            String word = cursor.getString(cursor.getColumnIndex("word"));
+            String interpret = cursor.getString(cursor.getColumnIndex("interpret"));
+            wordLists.add(new WordList(word, interpret));
+        }
+        return wordLists;
+    }
+
+    public List<WordList> queryWordOrderByWord() {
+        List<WordList> wordLists = new ArrayList<>();
+        Cursor cursor = dbR.query(tableName, new String[]{ "word", "interpret" }, null, null, null, null, "word");
+        while (cursor.moveToNext()) {
+            String word = cursor.getString(cursor.getColumnIndex("word"));
+            String interpret = cursor.getString(cursor.getColumnIndex("interpret"));
+            wordLists.add(new WordList(word, interpret));
+        }
+        return wordLists;
+    }
+
+    public void updateGrasp(String word, int graspInt) {
+        ContentValues values = new ContentValues();
+        values.put("grasp", graspInt);
+        dbW.update(tableName, values, "word = ?", new String[]{ word });
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        dbW.close();
+        dbR.close();
+    }
 }

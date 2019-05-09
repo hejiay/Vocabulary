@@ -353,7 +353,7 @@ public class Review extends Fragment implements View.OnClickListener, TextWatche
     }
 
     public void initWord() {
-        WordInfo wordInfo = wordBox.getWordByGraspByRandom(8, 10, 1);
+        WordInfo wordInfo = wordBox.getWordByGraspByRandom(0, 10, 1);
         wordInfoHandler(wordInfo);
         showContent();
     }

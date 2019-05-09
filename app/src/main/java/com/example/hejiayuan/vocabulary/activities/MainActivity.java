@@ -62,13 +62,12 @@ public class MainActivity extends AppCompatActivity implements BadgeDismissListe
     private Statistics statisticsTab;
     private Setting settingTab;
 
-//    View middleView = mTabbar.getMiddleView();
+    View middleView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        LitePal.getDatabase();
         init();
         ActivityCompat.requestPermissions((Activity) MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         if (GetSharedPre.getSharedOfSwitch() == true) {
@@ -108,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements BadgeDismissListe
         mTabbar.setPageAnimateEnable(true);
         mTabbar.setTabListener(this);
 
-
+        middleView = mTabbar.getMiddleView();
 
         list.add(reviewTab);
         list.add(noteTab);
@@ -120,15 +119,14 @@ public class MainActivity extends AppCompatActivity implements BadgeDismissListe
         //设置Badge消失的代理
         mTabbar.setDismissListener(this);
         mTabbar.setTabListener(this);
-        if (mTabbar.getMiddleView() != null) {
-            mTabbar.getMiddleView().setOnClickListener(new View.OnClickListener() {
+          middleView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(MainActivity.this, DictAvtivity.class);
                     startActivity(intent);
                 }
             });
-        }
+
     }
 
     public JPTabBar getTabbar() {

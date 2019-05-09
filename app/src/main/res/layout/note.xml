@@ -39,7 +39,8 @@
                     android:layout_gravity="center"
                     android:entries="@array/spingarr_selected"
                     android:gravity="center"
-                    tools:padding="10dp"></Spinner>
+                    tools:padding="10dp">
+                </Spinner>
 
                 <Spinner
                     android:id="@+id/id_note_spinner_order"
@@ -48,7 +49,8 @@
                     android:layout_gravity="center|right"
                     android:entries="@array/spingarr_order"
                     android:gravity="right"
-                    android:padding="10dp"></Spinner>
+                    android:padding="10dp">
+                </Spinner>
             </LinearLayout>
 
         </android.support.v7.widget.Toolbar>
@@ -62,6 +64,7 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/id_note_recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+            android:layout_height="match_parent">
+        </android.support.v7.widget.RecyclerView>
     </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>
